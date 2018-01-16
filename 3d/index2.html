@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"/>
+    <title></title>
+
+    <style type="text/css">
+        @media screen and (min-width: 600px) {
+            body {
+                width: 700px;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            body {
+                width: 1024px;
+            }
+        }
+
+        @media screen and (min-width: 1440px) {
+            body {
+                width: 1440px;
+            }
+        }
+        div.calender-space{
+            height: 600px;
+            width: 900px;
+            
+            line-height: 600px;
+            background: darkseagreen;
+            position: relative;
+            perspective: 1800px;
+
+            overflow: hidden;
+        }
+        div.page-group{
+            height: 400px;
+            width: 100%;
+            margin: 80px auto;
+            line-height: 400px;
+            -webkit-perspective: 1800px;
+            perspective-origin: 50% 50%;
+            transform-style: preserve-3d;
+            overflow: hidden;
+        }
+        div.page{
+            position: absolute;
+            padding: 20px;
+            margin: 20px auto;
+            height: 300px;
+            width: 200px;
+            font-weight: 300;
+            font-size: 300px;
+            overflow: hidden;
+            line-height: 300px;
+            text-align: center;
+            background-color: black;
+            color: white;
+
+            -webkit-transition: -webkit-transform 1s linear;
+            -moz-transition: -moz-transform 1s  linear;
+            -ms-transition: -ms-transform 1s  linear;
+            -o-transition: -o-transform 1s  linear;
+            transition: transform 1s  linear;
+
+            -webkit-transform-origin: 50% 50%;
+            -moz-transform-origin: 50% 50%;
+            -ms-transform-origin: 50% 50%;
+            -o-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+
+
+        }
+
+    </style>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        function rolling(obj, options) {
+            for (k in options) {
+                obj.css("-webkit-" + k, options[k]);
+                obj.css("-moz-" + k, options[k]);
+                obj.css("-o-" + k, options[k]);
+                obj.css(k, options[k]);
+            }
+        }
+        var getRandomColor = function(){
+            return  '#' +
+                (function(color){
+
+                    return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+
+                    && (color.length == 6) ?  color : arguments.callee(color);
+
+                })('');
+        };
+        $(document).ready(function () {
+            var pages = $(".page");
+
+            for(var startIndex = 1;startIndex<7;startIndex++){
+                $("#id-page"+startIndex).css("left",20*(startIndex-1)+"px");
+                $("#id-page"+startIndex).css("z-index",startIndex);
+                $("#id-page"+startIndex).css("background-color",getRandomColor());
+            }
+            var currentIndex = 5;
+            $(".next_btn_loc").click(function(){
+
+                if(currentIndex < 0){
+                    currentIndex = 5;
+                }
+                var currentObj = pages.eq(currentIndex);
+                rolling(currentObj,{"transform": "translateX(800px) translateZ(-1000px) rotateY(50deg)"});
+                currentIndex--;
+
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div class="calender-space">
+    <div class="page-group">
+        <div class="page" id="id-page1">1</div>
+        <div class="page" id="id-page2">2</div>
+        <div class="page" id="id-page3">3</div>
+        <div class="page" id="id-page4">4</div>
+        <div class="page" id="id-page5">5</div>
+        <div class="page" id="id-page6">6</div>
+    </div>
+
+</div>
+<div class="btn-group">
+    <button  class="btn next_btn_loc">start</button>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport"/>
+    <title></title>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/fontawesome/4.4.0/css/font-awesome.min.css">
+    <style type="text/css">
+        @media screen and (min-width: 600px) {
+            body {
+                width: 700px;
+                /*background: blue;*/
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            body {
+                width: 1024px;
+                /*background: green;*/
+            }
+        }
+
+        @media screen and (min-width: 1440px) {
+            body {
+                width: 1440px;
+                /*background: black;*/
+            }
+        }
+
+        div, button, span {
+            -webkit-transition: all 0.1s linear;
+            -moz-transition: all 0.1s linear;
+            -ms-transition: all 0.1s linear;
+            -o-transition: all 0.1s linear;
+            transition: all 0.1s linear;
+        }
+
+        div.cart {
+            float: left;
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            font-size: 40px;
+            color: red;
+        }
+
+        div.cart:hover {
+            cursor: pointer;
+        }
+
+        div.goods {
+            height: 2600px;
+            width: 100%;
+            position: relative;
+        }
+
+        div.good {
+            position: absolute;
+            float: left;
+            bottom: 20px;
+            left: 50px;
+            -webkit-transition: all 0s linear;
+            -moz-transition: all 0s linear;
+            -ms-transition: all 0s linear;
+            -o-transition: all 0s linear;
+            transition: all 0s linear;
+        }
+        div.btn-group {
+            position: absolute;
+            bottom: 20px;
+            left: 120px;
+            width: 120px;
+            height: 15px;
+            line-height: 15px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        div.scale-block {
+            opacity: 0;
+            max-width: 100px;
+            /*float: left;*/
+        }
+
+        div.btn-group:hover .scale-block {
+            opacity: 1;
+            width: 100px;
+        }
+
+        .btn-group input {
+            width: 15px;
+            text-align: right;
+            float: left;
+        }
+
+        button {
+            border: none;
+            height: 15px;
+            background: none;
+            float: left;
+        }
+
+    </style>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        console.log("hello world");
+
+        function rolling(obj, options) {
+            for (k in options) {
+                obj.css("-webkit-" + k, options[k]);
+                obj.css("-moz-" + k, options[k]);
+                obj.css("-o-" + k, options[k]);
+                obj.css(k, options[k]);
+//                console.log(options);
+            }
+        }
+        //把一个元素移动到另外一个位置
+        function move(obj, options) {
+            var topdelta = parseInt(obj.offsetTop) + options.top;
+            var leftdelta = parseInt(obj.offsetLeft) + options.left;
+
+            obj.style.top = topdelta + "px";
+            obj.style.left = leftdelta + "px";
+        }
+
+        $(document).ready(function () {
+
+            $("#id-add").click(function (e) {
+                var value = $("#id-count").val();
+                if (!value) {
+                    value = 0;
+                }
+                $("#id-count").val(parseInt(value) + 1);
+            });
+            $("#id-minus").click(function (e) {
+                var value = parseInt($("#id-count").val());
+                if (value >= 1) {
+                    $("#id-count").val(value - 1);
+                }
+                else {
+                    $("#id-count").val(0);
+                }
+            });
+            var t;
+            $("#id-item").click(function (e) {
+                //
+                var cart = document.getElementsByClassName("cart")[0];
+                var good = document.getElementsByClassName("good")[0];
+
+                var topDelta = (cart.scrollTop + cart.offsetTop) - (good.scrollTop + good.offsetTop);
+                var leftDelta = (cart.scrollLeft + cart.offsetLeft) - (good.scrollLeft + good.offsetLeft);
+
+                var goodLeft = good.scrollLeft+good.offsetLeft + (good.offsetWidth/2);
+                var goodTop = good.scrollTop+good.offsetTop + (good.offsetHeight/2);
+
+                var stepLeft = Math.floor(leftDelta / 30);
+                var stepTop = Math.floor(topDelta / 30);
+
+                var obj = $("#id-item");
+                var deg = 0;
+                var t = setInterval(function () {
+                    deg += 30;
+                    if (deg == 360) {
+                        deg = 0;
+                    }
+                    rolling(obj, {"transform": "rotate(" + deg + "deg)"});
+                    var cart = document.getElementsByClassName("cart")[0];
+                    var good = document.getElementsByClassName("good")[0];
+
+                    var topDelta = (cart.scrollTop + cart.offsetTop) - (good.scrollTop + good.offsetTop);
+                    var leftDelta = (cart.scrollLeft + cart.offsetLeft) - (good.scrollLeft + good.offsetLeft);
+                    if(Math.abs(topDelta) == 0 || Math.abs(leftDelta)==0){
+                        rolling(obj, {"transform": "rotate(" + 0 + "deg)"});
+                        clearInterval(t);
+                    }
+                    if(Math.abs(topDelta) >Math.abs(stepTop) || Math.abs(leftDelta)>Math.abs(stepLeft)){
+                        move(good, {left: stepLeft, top: stepTop});
+                    }
+                    else{
+                        move(good, {left: leftDelta, top:topDelta });
+                    }
+
+                }, 100);
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div class="cart">
+    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+</div>
+<div class="goods">
+    <div class="good" >
+        <div class="tran" id="id-item">
+            <i class="fa fa-car" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="btn-group">
+        <div class=" scale-block">
+            <button class="btn" id="id-minus">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+            </button>
+            <input type="text" id="id-count" value="0"/>
+        </div>
+
+        <button class="btn" id="id-add">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
+</body>
+</html>
