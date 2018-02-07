@@ -22,18 +22,19 @@
                 width: 1440px;
             }
         }
-        div.calender-space{
+
+        div.calender-space {
             height: 600px;
             width: 900px;
-            
+
             line-height: 600px;
             background: darkseagreen;
             position: relative;
             perspective: 1800px;
-
             overflow: hidden;
         }
-        div.page-group{
+
+        div.page-group {
             height: 400px;
             width: 100%;
             margin: 80px auto;
@@ -43,7 +44,8 @@
             transform-style: preserve-3d;
             overflow: hidden;
         }
-        div.page{
+
+        div.page {
             position: absolute;
             padding: 20px;
             margin: 20px auto;
@@ -58,17 +60,16 @@
             color: white;
 
             -webkit-transition: -webkit-transform 1s linear;
-            -moz-transition: -moz-transform 1s  linear;
-            -ms-transition: -ms-transform 1s  linear;
-            -o-transition: -o-transform 1s  linear;
-            transition: transform 1s  linear;
+            -moz-transition: -moz-transform 1s linear;
+            -ms-transition: -ms-transform 1s linear;
+            -o-transition: -o-transform 1s linear;
+            transition: transform 1s linear;
 
             -webkit-transform-origin: 50% 50%;
             -moz-transform-origin: 50% 50%;
             -ms-transform-origin: 50% 50%;
             -o-transform-origin: 50% 50%;
             transform-origin: 50% 50%;
-
 
         }
 
@@ -83,32 +84,32 @@
                 obj.css(k, options[k]);
             }
         }
-        var getRandomColor = function(){
-            return  '#' +
-                (function(color){
+        var getRandomColor = function () {
+            return '#' +
+                    (function (color) {
 
-                    return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+                        return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
 
-                    && (color.length == 6) ?  color : arguments.callee(color);
+                        && (color.length == 6) ? color : arguments.callee(color);
 
-                })('');
+                    })('');
         };
         $(document).ready(function () {
             var pages = $(".page");
 
-            for(var startIndex = 1;startIndex<7;startIndex++){
-                $("#id-page"+startIndex).css("left",20*(startIndex-1)+"px");
-                $("#id-page"+startIndex).css("z-index",startIndex);
-                $("#id-page"+startIndex).css("background-color",getRandomColor());
+            for (var startIndex = 1; startIndex < 7; startIndex++) {
+                $("#id-page" + startIndex).css("left", 20 * (startIndex - 1) + "px");
+                $("#id-page" + startIndex).css("z-index", startIndex);
+                $("#id-page" + startIndex).css("background-color", getRandomColor());
             }
             var currentIndex = 5;
-            $(".next_btn_loc").click(function(){
+            $(".next_btn_loc").click(function () {
 
-                if(currentIndex < 0){
+                if (currentIndex < 0) {
                     currentIndex = 5;
                 }
                 var currentObj = pages.eq(currentIndex);
-                rolling(currentObj,{"transform": "translateX(800px) translateZ(-1000px) rotateY(50deg)"});
+                rolling(currentObj, {"transform": "translateX(800px) translateZ(-1000px) rotateY(50deg)"});
                 currentIndex--;
 
             });
@@ -129,7 +130,7 @@
 
 </div>
 <div class="btn-group">
-    <button  class="btn next_btn_loc">start</button>
+    <button class="btn next_btn_loc">start</button>
 </div>
 
 </body>
